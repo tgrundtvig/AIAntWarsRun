@@ -5,11 +5,8 @@
  */
 package aiantwarsrun;
 
-import aiantwars.EAntType;
 import aiantwars.IAntAI;
-import aiantwars.impl.AntWarsGameCtrl;
 import aiantwars.impl.Board;
-import aiantwars.impl.DummyGraphicsAntWarsGUI;
 import aiantwars.impl.Location;
 import aiantwars.impl.SimpleAI;
 import aiantwarsgraphics.AIAntWarsApp;
@@ -24,7 +21,7 @@ import app2dpcimpl.PCPlatformImpl;
  *
  * @author Tobias Grundtvig
  */
-public class AIAntWarsRun2
+public class AIAntWarsRun4
 {
 
     //////////////////////////////////////////////////////////////////////
@@ -33,19 +30,27 @@ public class AIAntWarsRun2
     
     public static void main(String[] args)
     {
-        Board board = BoardBuilder.buildTwoPlayerSymmetric(32, 17, 16, 4, 0, 4, 5);
+        Board board = new Board(200, 200);
+        for(int y = 0; y < 2; ++y)
+        {
+            for(int x = 0; x < 2; ++x)
+            {
+                Location loc = board.getLocation(x, y);
+                loc.setFoodCount(20);
+            }
+        }
        
-        IAntAI[] ais = new IAntAI[2];
+        IAntAI[] ais = new IAntAI[4];
         ais[0] = new SimpleAI(); //RED
         ais[1] = new SimpleAI(); //BLUE
+        ais[2] = new SimpleAI();  //GREEN
+        ais[3] = new SimpleAI(); //YELLOW
         
-        
-        int yA = board.getSizeY() / 2;
-        int yB = board.getSizeY() % 2 == 0 ? yA - 1 : yA;
-        
-        BoardPos[] positions = new BoardPos[2];
-        positions[0] = new BoardPos(0, yA, 1);
-        positions[1] = new BoardPos(board.getSizeX() - 1, yB, 3);
+        BoardPos[] positions = new BoardPos[4];
+        positions[0] = new BoardPos(0, 0, 0);
+        positions[1] = new BoardPos(board.getSizeX()-1, board.getSizeY()-1, 2);
+        positions[2] = new BoardPos(0, board.getSizeY()-1, 1);
+        positions[3] = new BoardPos(board.getSizeX()-1, 0, 3);
         
         Platform p = new PCPlatformImpl(true);
         PanAndZoom2DApp app = new AIAntWarsApp(board, ais, positions);
